@@ -73,12 +73,29 @@ void snakeAdd(player * s){
   s->next->prev = s;
 }
 
+//Prints some information about the location of the snake
 void snakePosDebug(player * s){
   int i = 0;
   while(s != NULL){
     mvprintw((15+i),15,"Snake %d, xPos: %d, yPos: %d " ,i, s->xPos, s->yPos);
     i++;
     s = s->next;
+  }
+}
+
+//Checks the character the snake has just entered
+void snakeCheck(player * s){
+  char check = mvinch(s->yPos, s->xPos);
+  mvprintw(10,25, "check:%c" ,check);
+  switch(check){
+    case 'X':
+      printf("wtf");
+      endwin();
+      exit(0);
+      break;
+
+    default:
+      break;
   }
 }
 
@@ -128,17 +145,17 @@ int main(){
   snake->yDir = 1;
   snake->prev = NULL;
 
-  for(int i = 0; i<3; i++){
+  for(int i = 0; i<10; i++){
     snakeAdd(snake);
   }
 
   //Main game loop
   while(1){
-    drawScreen();
-
     getInput(getch(), snake);
     snakeUpdate(snake);
-    snakeDraw(snake);
+    snakeCheck(snake);  
+    drawScreen(); 
+    snakeDraw(snake); 
 
     //snakePosDebug(snake);
 

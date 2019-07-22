@@ -2,3 +2,5 @@
 *.exe
 a.exe.stackdump
 a.exe.stackdump
+*.stackdump
+*.stackdump
