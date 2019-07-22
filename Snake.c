@@ -9,7 +9,7 @@ typedef struct player{
   int yPos;
   int xDir;
   int yDir;
-  player * next;
+  struct player * next;
 }player;
 
 //Initialises ncurses window
@@ -31,12 +31,33 @@ void drawScreen(){
 }
 
 void snakeUpdate(player * s){
-  s->xPos = s->xPos + s->xDir;
-  s->yPos = s->yPos + s->yDir; 
+  player * tail;
+  while(s->next != NULL){
+    s->xPos = s->xPos + s->xDir;
+    s->yPos = s->yPos + s->yDir;
+    s = s->next;
+  }
+  
 }
 
+//Draws the snake
 void snakeDraw(player * s){
-  mvprintw(s->yPos, s->xPos, "X");
+  while(s->next != NULL){
+    mvprintw(s->yPos, s->xPos, "X");
+    s = s->next;
+  }
+}
+
+//Adds another character to the snake
+void snakeAdd(player * s){
+  while(s->next != NULL){ //Finds the end of the snake
+    s = s->next;
+  }
+  s->next = malloc(sizeof(player));
+  s->next->xPos = s->xPos + (-1* s->xDir);
+  s->next->yPos = s->yPos + (-1* s->yDir);
+  s->next->xDir = s->xDir;
+  s->next->yDir = s->yDir;
 }
 
 //Gets the players input
@@ -83,6 +104,10 @@ int main(){
   snake->yPos = 0;
   snake->xDir = 0;
   snake->yDir = 1;
+
+  for(int i = 0; i<3; i++){
+    snakeAdd(snake);
+  }
 
   //Main game loop
   while(1){
