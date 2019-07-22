@@ -10,6 +10,7 @@ typedef struct player{
   int xDir;
   int yDir;
   struct player * next;
+  struct player * prev;
 }player;
 
 //Initialises ncurses window
@@ -30,19 +31,30 @@ void drawScreen(){
   return;
 }
 
+//Updates the position of all parts of the snake
 void snakeUpdate(player * s){
-  player * tail;
+  
+
+  //Go to the last part of the snake
   while(s->next != NULL){
-    s->xPos = s->xPos + s->xDir;
-    s->yPos = s->yPos + s->yDir;
     s = s->next;
   }
   
+  //Work back applying values
+  while(s->prev != NULL){
+    s->xPos = s->prev->xPos;
+    s->yPos = s->prev->yPos;
+    s = s->prev;
+  }
+
+  //Updates the head
+  s->xPos = s->xPos + s->xDir;
+  s->yPos = s->yPos + s->yDir;
 }
 
 //Draws the snake
 void snakeDraw(player * s){
-  while(s->next != NULL){
+  while(s != NULL){
     mvprintw(s->yPos, s->xPos, "X");
     s = s->next;
   }
@@ -58,6 +70,16 @@ void snakeAdd(player * s){
   s->next->yPos = s->yPos + (-1* s->yDir);
   s->next->xDir = s->xDir;
   s->next->yDir = s->yDir;
+  s->next->prev = s;
+}
+
+void snakePosDebug(player * s){
+  int i = 0;
+  while(s != NULL){
+    mvprintw((15+i),15,"Snake %d, xPos: %d, yPos: %d " ,i, s->xPos, s->yPos);
+    i++;
+    s = s->next;
+  }
 }
 
 //Gets the players input
@@ -104,6 +126,7 @@ int main(){
   snake->yPos = 0;
   snake->xDir = 0;
   snake->yDir = 1;
+  snake->prev = NULL;
 
   for(int i = 0; i<3; i++){
     snakeAdd(snake);
@@ -117,6 +140,7 @@ int main(){
     snakeUpdate(snake);
     snakeDraw(snake);
 
+    //snakePosDebug(snake);
 
     //Draws the screen
     refresh();
