@@ -9,6 +9,7 @@ typedef struct player{
   int yPos;
   int xDir;
   int yDir;
+  player * next;
 }player;
 
 //Initialises ncurses window
@@ -39,7 +40,7 @@ void snakeDraw(player * s){
 }
 
 //Gets the players input
-void getInput(char input){
+void getInput(char input, player * s){
   switch (input){
     case 'q':
       endwin();
@@ -47,15 +48,23 @@ void getInput(char input){
       break;
     
     case 'w':
+      s->yDir = -1;
+      s->xDir = 0;
       break;
 
     case 'a':
+      s->yDir = 0;
+      s->xDir = -1;
       break;
 
     case 's':
+      s->yDir = 1;
+      s->xDir = 0;
       break;
 
     case 'd':
+      s->yDir = 0;
+      s->xDir = 1;
       break;
 
     default:
@@ -79,7 +88,7 @@ int main(){
   while(1){
     drawScreen();
 
-    getInput(getch());
+    getInput(getch(), snake);
     snakeUpdate(snake);
     snakeDraw(snake);
 
