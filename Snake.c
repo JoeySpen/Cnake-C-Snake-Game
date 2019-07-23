@@ -108,23 +108,31 @@ void getInput(char input, player * s){
       break;
     
     case 'w':
-      s->yDir = -1;
-      s->xDir = 0;
+      if(s->yDir != 1){
+        s->yDir = -1;
+        s->xDir = 0;
+      }
       break;
 
     case 'a':
-      s->yDir = 0;
-      s->xDir = -1;
+      if(s->xDir != 1){
+        s->yDir = 0;
+        s->xDir = -1;
+      }
       break;
 
     case 's':
-      s->yDir = 1;
-      s->xDir = 0;
+      if(s->yDir != -1){
+        s->yDir = 1;
+        s->xDir = 0;
+      }
       break;
 
     case 'd':
-      s->yDir = 0;
-      s->xDir = 1;
+      if(s->xDir != -1){
+        s->yDir = 0;
+        s->xDir = 1;
+      }
       break;
 
     default:
