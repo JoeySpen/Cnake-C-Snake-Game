@@ -86,24 +86,8 @@ void snakePosDebug(player * s){
   }
 }
 
-//Checks the character the snake has just entered
-void snakeCheck(player * s){
-  char check = mvinch(s->yPos, s->xPos);
-  mvprintw(10,25, "check:%c" ,check);
-  switch(check){
-    case 'X':
-      printf("wtf");
-      endwin();
-      exit(0);
-      break;
-
-    default:
-      break;
-  }
-}
-
 //Removes the fruit
-void fruitEat(){
+void fruitEat(fruit * f){
 
 }
 
@@ -117,6 +101,25 @@ void fruitAdd(fruit * f){
 
 void fruitDraw(fruit * f){
   mvprintw(f->yPos, f->xPos, "F");
+}
+
+//Checks the character the snake has just entered
+void snakeCheck(player * s, fruit * f){
+  char check = mvinch(s->yPos, s->xPos);
+  mvprintw(10,25, "check:%c" ,check);
+  switch(check){
+    case 'X':
+      printf("wtf");
+      endwin();
+      exit(0);
+      break;
+    
+    case 'F':
+      fruitEat(f);
+
+    default:
+      break;
+  }
 }
 
 //Gets the players input
@@ -183,7 +186,7 @@ int main(){
   while(1){
     getInput(getch(), snake);
     snakeUpdate(snake);
-    snakeCheck(snake);  
+    snakeCheck(snake, fruit);  
     drawScreen(); 
     fruitDraw(fruit);
     snakeDraw(snake); 
