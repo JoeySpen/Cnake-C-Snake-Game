@@ -13,6 +13,11 @@ typedef struct player{
   struct player * prev;
 }player;
 
+typedef struct fruit{
+  int xPos;
+  int yPos;
+}fruit;
+
 //Initialises ncurses window
 void windowSetup(){
   initscr();
@@ -33,8 +38,6 @@ void drawScreen(){
 
 //Updates the position of all parts of the snake
 void snakeUpdate(player * s){
-  
-
   //Go to the last part of the snake
   while(s->next != NULL){
     s = s->next;
@@ -99,6 +102,23 @@ void snakeCheck(player * s){
   }
 }
 
+//Removes the fruit
+void fruitEat(){
+
+}
+
+//Places the fruit randomly
+void fruitAdd(fruit * f){
+  mvprintw(f->yPos, f->xPos, ".");
+  f->yPos = rand()%10;
+  f->xPos = rand()%10;
+  mvprintw(f->yPos, f->xPos, "F");
+}
+
+void fruitDraw(fruit * f){
+  mvprintw(f->yPos, f->xPos, "F");
+}
+
 //Gets the players input
 void getInput(char input, player * s){
   switch (input){
@@ -146,6 +166,7 @@ int main(){
 
   //Create the snake
   player * snake = malloc(sizeof(player));
+  fruit * fruit = malloc(sizeof(fruit));
 
   snake->xPos = 0;
   snake->yPos = 0;
@@ -156,6 +177,7 @@ int main(){
   for(int i = 0; i<10; i++){
     snakeAdd(snake);
   }
+  fruitAdd(fruit);
 
   //Main game loop
   while(1){
@@ -163,6 +185,7 @@ int main(){
     snakeUpdate(snake);
     snakeCheck(snake);  
     drawScreen(); 
+    fruitDraw(fruit);
     snakeDraw(snake); 
 
     //snakePosDebug(snake);
