@@ -73,6 +73,7 @@ void snakeAdd(player * s){
   s->next->yPos = s->yPos + (-1* s->yDir);
   s->next->xDir = s->xDir;
   s->next->yDir = s->yDir;
+  s->next->next = NULL;
   s->next->prev = s;
 }
 
@@ -109,13 +110,14 @@ void snakeCheck(player * s, fruit * f){
   mvprintw(10,25, "check:%c" ,check);
   switch(check){
     case 'X':
-      printf("wtf");
       endwin();
       exit(0);
       break;
     
     case 'F':
-      fruitEat(f);
+      fruitAdd(f);
+      snakeAdd(s);
+      break;
 
     default:
       break;
@@ -177,9 +179,10 @@ int main(){
   snake->yDir = 1;
   snake->prev = NULL;
 
-  for(int i = 0; i<10; i++){
+  /*
+  for(int i = 0; i<2; i++){
     snakeAdd(snake);
-  }
+  }*/
   fruitAdd(fruit);
 
   //Main game loop
