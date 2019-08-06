@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define HEIGHT 20
+#define WIDTH 40
+
 typedef struct player{
   int xPos;
   int yPos;
@@ -30,8 +33,9 @@ void windowSetup(){
 
 //Draws dots to the screen, called first and is then overwritten by the snake
 void drawScreen(){
-  for(int i = 0; i < 10; i++){
-    mvprintw(i, 0, "............");
+  for(int i = 0; i < HEIGHT; i++){
+    for(int j = 0; j < WIDTH; j++)
+      mvprintw(i, j, ".");
   }
   return;
 }
@@ -179,10 +183,10 @@ int main(){
   snake->yDir = 1;
   snake->prev = NULL;
 
-  /*
+  
   for(int i = 0; i<2; i++){
     snakeAdd(snake);
-  }*/
+  }
   fruitAdd(fruit);
 
   //Main game loop
