@@ -86,6 +86,11 @@ void snakePosDebug(player * s){
   }
 }
 
+//Removes the fruit
+void fruitEat(fruit * f){
+
+}
+
 //Places the fruit randomly
 void fruitAdd(fruit * f){
   mvprintw(f->yPos, f->xPos, ".");
@@ -110,8 +115,7 @@ void snakeCheck(player * s, fruit * f){
       break;
     
     case 'F':
-      fruitAdd(f);
-      snakeAdd(s);
+      fruitEat(f);
 
     default:
       break;
