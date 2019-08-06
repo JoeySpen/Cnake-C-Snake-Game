@@ -7,6 +7,8 @@
 #define HEIGHT 20
 #define WIDTH 40
 
+int score = 0;
+
 typedef struct player{
   int xPos;
   int yPos;
@@ -33,11 +35,15 @@ void windowSetup(){
 
 //Draws dots to the screen, called first and is then overwritten by the snake
 void drawScreen(){
-  for(int i = 0; i < HEIGHT; i++){
+  for(int i = 1; i <= HEIGHT; i++){
     for(int j = 0; j < WIDTH; j++)
       mvprintw(i, j, ".");
   }
   return;
+}
+
+void drawScore(){
+  mvprintw(0, 0, "Score: %d   " , score);
 }
 
 //Updates the position of all parts of the snake
@@ -99,8 +105,8 @@ void fruitEat(fruit * f){
 //Places the fruit randomly
 void fruitAdd(fruit * f){
   mvprintw(f->yPos, f->xPos, ".");
-  f->yPos = rand()%10;
-  f->xPos = rand()%10;
+  f->yPos = (rand()%HEIGHT) + 1;
+  f->xPos = rand()%WIDTH;
   mvprintw(f->yPos, f->xPos, "F");
 }
 
@@ -121,6 +127,8 @@ void snakeCheck(player * s, fruit * f){
     case 'F':
       fruitAdd(f);
       snakeAdd(s);
+      score++;
+      drawScore();
       break;
 
     default:
@@ -172,13 +180,15 @@ void getInput(char input, player * s){
 //Main method
 int main(){
   windowSetup();
+  drawScore();
 
   //Create the snake
   player * snake = malloc(sizeof(player));
   fruit * fruit = malloc(sizeof(fruit));
+  fruit->yPos = 1;
 
-  snake->xPos = 0;
-  snake->yPos = 0;
+  snake->xPos = 5;
+  snake->yPos = 5;
   snake->xDir = 0;
   snake->yDir = 1;
   snake->prev = NULL;
