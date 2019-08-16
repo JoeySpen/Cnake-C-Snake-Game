@@ -35,8 +35,8 @@ void windowSetup(){
 
 //Draws dots to the screen, called first and is then overwritten by the snake
 void drawScreen(){
-  for(int i = 1; i <= HEIGHT; i++){
-    for(int j = 0; j < WIDTH; j++)
+  for(int i = 2; i < HEIGHT; i++){
+    for(int j = 1; j < WIDTH; j++)
       mvprintw(i, j, ".");
   }
   return;
@@ -105,7 +105,7 @@ void fruitEat(fruit * f){
 //Places the fruit randomly
 void fruitAdd(fruit * f){
   mvprintw(f->yPos, f->xPos, ".");
-  f->yPos = (rand()%HEIGHT) + 1;
+  f->yPos = (rand()%HEIGHT) + 2; // + 2 prevents fruit appearing in border
   f->xPos = rand()%WIDTH;
   mvprintw(f->yPos, f->xPos, "F");
 }
@@ -177,6 +177,13 @@ void getInput(char input, player * s){
   }
 }
 
+void drawBox(int h, int w){
+  mvhline(1, 0, 'A', w);
+  mvhline(h, 0, 'A', w);
+  mvvline(1, 0, 'A', h);
+  mvvline(1, w, 'A' , h);
+}
+
 //Main method
 int main(){
   windowSetup();
@@ -185,7 +192,8 @@ int main(){
   //Create the snake
   player * snake = malloc(sizeof(player));
   fruit * fruit = malloc(sizeof(fruit));
-  fruit->yPos = 1;
+  fruit->yPos = 2;
+  fruit->xPos = 1;
 
   snake->xPos = 5;
   snake->yPos = 5;
@@ -193,6 +201,7 @@ int main(){
   snake->yDir = 1;
   snake->prev = NULL;
 
+  drawBox(HEIGHT, WIDTH);
   
   for(int i = 0; i<2; i++){
     snakeAdd(snake);
